@@ -167,6 +167,11 @@ export class AppComponent implements OnInit {
     const userAgentRegex = /\b(BlackBerry|webOS|iPhone|IEMobile|Android|Windows Phone|iPad|iPod)\b/i;
     return userAgentRegex.test(UA);
   }
+  
+  onInputUrl() {
+	let url = window.prompt("Input Epub Url")
+	console.log(url);
+  }
 
   onInputChange(el: HTMLInputElement) {
     if (el.files?.length) {

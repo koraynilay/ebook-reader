@@ -9,6 +9,12 @@
     <label class="no-margin">
       <fa-icon class="action-icon"
                [icon]="faFileMedical"></fa-icon>
+      <button hidden (click)="onInputUrl()"></button>
+      <!-- <button type="hidden" onclick="onInputUrl()"></button> -->
+    </label>
+    <label class="no-margin">
+      <fa-icon class="action-icon"
+               [icon]="faFileMedical"></fa-icon>
       <input type="file" accept=".htmlz,.epub" multiple (change)="onInputChange(inputRef)" hidden #inputRef>
     </label>
     <label class="no-margin" *ngIf="!isMobileDevice">
@@ -46,6 +52,7 @@
     (contextmenu)="$event.preventDefault();zoneInputDirRef.click();">
     {{dropZoneLabel}}
   </label>
+  <input type="file" accept=".htmlz,.epub" multiple hidden #zoneInputRef (change)="onInputChange(zoneInputRef)">
   <input type="file" accept=".htmlz,.epub" multiple hidden #zoneInputRef (change)="onInputChange(zoneInputRef)">
   <input type="file" webkitdirectory directory multiple hidden #zoneInputDirRef (change)="onInputChange(zoneInputDirRef)">
 </ng-template>
