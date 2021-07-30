@@ -30,7 +30,7 @@ import stringifyCss from './utils/css-stringify';
 import { EpubExtractor, HtmlzExtractor } from './utils/extractor';
 import { getFormattedElementEpub, getFormattedElementHtmlz } from './utils/html-fixer';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 //import { tempDirectory } from 'temp-dir';
 
 @Component({
@@ -179,10 +179,10 @@ export class AppComponent implements OnInit {
 	//download file (HttpClient.get(url,{responseType: 'arraybuffer'})
 	if(url){
 	if(url.slice(-5) == '.epub') {
-		this.http.get(url, {responseType:'arraybuffer'})
+		this.http.get(url, {headers: new HttpHeaders({'Access-Control-Allow-Origin':'*'}), responseType:'blob'})
 		.subscribe((res) => 
 			   this.onFileChange(
-				   Array.from(new File(new Blob(res, {type:"application/epub+zip"}), 'tmp.epub')
+				   Array.from([new File([res], 'tmp.epub')]
 				   )
 			   )
 		)

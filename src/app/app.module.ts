@@ -16,6 +16,8 @@ import { ReaderComponent } from './reader/reader.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { environment } from '../environments/environment';
 
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +34,7 @@ import { environment } from '../environments/environment';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
