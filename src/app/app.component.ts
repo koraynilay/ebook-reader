@@ -17,7 +17,7 @@ import { faFolderPlus } from '@fortawesome/free-solid-svg-icons/faFolderPlus';
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons/faSyncAlt';
 import * as parser from 'fast-xml-parser';
 import { IDBPDatabase } from 'idb';
-import { fromEvent, of } from 'rxjs';
+import { fromEvent, of, Observable } from 'rxjs';
 import { filter, map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { AutoScrollerService } from './auto-scroller.service';
 import { BookmarkManagerService } from './bookmark-manager.service';
@@ -30,10 +30,13 @@ import stringifyCss from './utils/css-stringify';
 import { EpubExtractor, HtmlzExtractor } from './utils/extractor';
 import { getFormattedElementEpub, getFormattedElementHtmlz } from './utils/html-fixer';
 
+import { HttpClient } from '@angular/common/http';
+//import { tempDirectory } from 'temp-dir';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
 
@@ -68,6 +71,7 @@ export class AppComponent implements OnInit {
     public autoScrollerService: AutoScrollerService,
     public bookmarManagerService: BookmarkManagerService,
     public ebookDisplayManagerService: EbookDisplayManagerService,
+    public http: HttpClient,
     private scrollInformationService: ScrollInformationService,
     private themeManagerService: ThemeManagerService,
     private databaseService: DatabaseService,
@@ -171,6 +175,18 @@ export class AppComponent implements OnInit {
   onInputUrl() {
 	let url = window.prompt("Input Epub Url")
 	console.log(url);
+	//vedi: https://stackoverflow.com/a/55003097
+	//download file (HttpClient.get(url,{responseType: 'arraybuffer'})
+	if(url){
+	if(url.slice(-5) == '.epub') {
+		this.http.get(url, {responseType:'arraybuffer'})
+		.subscribe((res) => 
+			   this.onFileChange(
+				   Array.from(new File(new Blob(res, {type:"application/epub+zip"}), 'tmp.epub')
+				   )
+			   )
+		)
+	}}
   }
 
   onInputChange(el: HTMLInputElement) {
