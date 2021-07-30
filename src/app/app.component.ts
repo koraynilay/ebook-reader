@@ -179,12 +179,14 @@ export class AppComponent implements OnInit {
 	//download file (HttpClient.get(url,{responseType: 'arraybuffer'})
 	if(url){
 	if(url.slice(-5) == '.epub') {
-		this.http.get(url, {headers: new HttpHeaders({'Access-Control-Allow-Origin':'*'}), responseType:'blob'})
-		.subscribe((res) => 
-			   this.onFileChange(
-				   Array.from([new File([res], 'tmp.epub')]
-				   )
-			   )
+		this.http.get(url, {headers: new HttpHeaders({  'origin':'http://filesamples.com',
+								'Access-Control-Allow-Methods':'GET',
+								'Accept':'application/epub+zip'}), responseType:'blob'})
+		.subscribe((res) => {
+			   const val = Array.from([new File([res], 'tmp.epub')])
+			   console.log(typeof val);
+			   this.onFileChange(val);
+			}
 		)
 	}}
   }
@@ -192,6 +194,7 @@ export class AppComponent implements OnInit {
   onInputChange(el: HTMLInputElement) {
     if (el.files?.length) {
       const validFiles = Array.from(el.files).filter((file) => this.filePattern.test(file.name));
+      console.log(typeof validFiles);
 
       if (validFiles.length) {
         this.onFileChange(validFiles);
